@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitHub Webhook Events</title>
+    <meta http-equiv="refresh" content="5">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            padding: 20px;
+            background: #24292e;
+            color: white;
+            margin: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            margin-top: 30px;
+        }
+        .card {
+            background: white;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .badge {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+        .push { background: #2ea44f; }
+        .pr { background: #6f42c1; }
+        .time {
+            color: #666;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🚀 Latest GitHub Events</h1>
+
+<div class="container">
+    {% for e in events %}
+    <div class="card">
+        <div>
+            <span class="badge {{ 'push' if e.action=='PUSH' else 'pr' }}">
+                {{ e.action }}
+            </span>
+
+            <strong>{{ e.author }}</strong>
+
+            {% if e.action == 'PUSH' %}
+                pushed to <b>{{ e.to_branch }}</b>
+            {% else %}
+                opened PR from <b>{{ e.from_branch }}</b> → <b>{{ e.to_branch }}</b>
+            {% endif %}
+        </div>
+
+        <div class="time">{{ e.timestamp }}</div>
+    </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>
